@@ -1,26 +1,28 @@
 <template>
-    <div v-for="p in products" class="product">
-      <a v-link="{name:'product', params:{id:p.id}}" class="title">{{ p.title }}</a>
-      <span class="price">{{ p.price | currency }}</span>
+  <div class='product-container'>
+    <div v-for="p in allProducts" class="product">
+      <router-link :to="{name: 'product', params: {id: p.id}}" class="title">{{ p.title }}</router-link>
+      <span class="price">$ {{ p.price }}</span>
     </div>
   </div>
 </template>
 
 <script>
-  import { getAllProducts, addToCart } from '../vuex/products/actions'
-
+  import { mapGetters, mapActions } from 'vuex'
   export default {
-    vuex: {
-      getters: {
-        products: ({ products }) => products.all
-      },
-      actions: {
-        getAllProducts,
-        addToCart
-      }
-    },
-    created () {
+    mounted () {
       this.getAllProducts()
+    },
+    computed: {
+      ...mapGetters([
+        'allProducts'
+      ])
+    },
+    methods: {
+      ...mapActions([
+        'getAllProducts'
+
+      ])
     }
   }
 </script>
@@ -38,5 +40,9 @@
 
 .price {
   float: right;
+}
+
+.product-container {
+  margin-bottom: 50px;
 }
 </style>

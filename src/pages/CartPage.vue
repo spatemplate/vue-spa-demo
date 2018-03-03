@@ -13,45 +13,45 @@
       </thead>
       <tbody>
       <tr v-for="p in products">
-        <td><a v-link="{name:'product', params:{id:p.id}}">{{ p.title }}</a></td>
-        <td>{{ p.price|currency }}</td>
+        <td><router-link :to="{name: 'product', params: {id: p.id}}">{{ p.title }}</router-link></td>
+        <td>$ {{ p.price }}</td>
         <td>{{ p.quantity }}</td>
-        <td>{{ p.price * p.quantity | currency }}</td>
+        <td>$ {{ p.price * p.quantity }}</td>
       </tr>
       <tr class='total'>
         <td><b>TOTAL</b></td>
         <td></td>
         <td></td>
-        <td>{{ total|currency }}</td>
+        <td>$ {{ total }}</td>
       </tr>
       </tbody>
     </table>
     <p><button :disabled="!products.length" @click="checkout(products)" class='checkout-button'>Checkout</button></p>
-    <p v-show="checkoutStatus">Checkout {{ checkoutStatus }}.</p>
     </div>
+    <p v-show="checkoutStatus">Checkout {{ checkoutStatus }}.</p>
   </div>
 </template>
 
 <script>
-  import { checkout } from '../vuex/cart/actions'
-  import { cartProducts } from '../vuex/cart/getters'
-
+  import { mapActions, mapGetters } from 'vuex'
   export default {
-    vuex: {
-      getters: {
-        products: cartProducts,
-        checkoutStatus: ({ cart }) => cart.lastCheckout
-      },
-      actions: {
-        checkout
-      }
-    },
     computed: {
+      ...mapGetters({
+        products: 'cartProducts'
+      }),
+      checkoutStatus () {
+        return this.$store.state.cart.lastCheckout
+      },
       total () {
         return this.products.reduce((total, p) => {
           return total + p.price * p.quantity
         }, 0)
       }
+    },
+    methods: {
+      ...mapActions([
+        'checkout'
+      ])
     }
   }
 </script>

@@ -5,22 +5,25 @@
   </div>
   <div class="page">
     <router-view></router-view>
+    <div class="help-text">
+      <p>Vue.js 2 Single Page App (SPA) Example with vuex and vue-router.</p>
+      <a href="https://github.com/skyronic/vue-spa">View Source Code</a>
+    </div>
   </div>
 </div>
 </template>
 
 <script>
-  import store from '../vuex/store'
-  import HeaderBar from '../components/HeaderBar'
-  export default {
-    store,
-    components: {HeaderBar}
-  }
+import HeaderBar from '@/components/HeaderBar'
+export default {
+  components: {
+    HeaderBar
+  },
+  name: 'app'
+}
 </script>
 
 <style>
-html {
-}
 body {
   font-family: "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #333;
@@ -40,5 +43,10 @@ body {
 .page {
   width: 100%;
   padding: 30px 50px;
+}
+
+.help-text {
+  margin-top: 20px;
+  font-size: 12px;
 }
 </style>

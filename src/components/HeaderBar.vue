@@ -1,17 +1,20 @@
 <template>
   <div class="menu-links">
-    <a v-link="{path:'/'}">HOME</a>
-    <a v-link="{path:'/cart'}">VIEW CART ({{ count }})</a>
+    <router-link to="/">Home</router-link>
+    <router-link to="/cart">Cart ({{ cartCount }})</router-link>
   </div>
 </template>
 
 <script>
-import { cartCount } from '../vuex/cart/getters'
+import { mapGetters } from 'vuex'
+
 export default {
-  vuex: {
-    getters: {
-      count: cartCount
-    }
+  computed: {
+    // mix the getters into the computed object
+    ...mapGetters([
+      'cartCount'
+
+    ])
   }
 }
 </script>

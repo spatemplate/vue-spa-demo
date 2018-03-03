@@ -1,6 +1,6 @@
 <template>
   <div class="product-item">
-    <a class="back-link" v-link="{path:'/'}">&lt; BACK</a>
+    <router-link to="/" class="back-link">BACK</router-link>
     <div class="product-title">{{ product.title }}</div>
     <div class="product-details">
       <div class="inventory">In Stock: {{ product.inventory }}</div>
@@ -11,22 +11,25 @@
 </template>
 
 <script>
-  import { getAllProducts, addToCart } from '../vuex/products/actions'
+  import { mapActions, mapGetters } from 'vuex'
   export default {
-    vuex: {
-      getters: {
-        product: ({products, route}) => {
-          var id = parseInt(route.params.id)
-          return products.all.find((p) => p.id === id) || {}
-        }
-      },
-      actions: {
-        getAllProducts,
-        addToCart
+    mounted () {
+      this.getAllProducts()
+    },
+    computed: {
+      ...mapGetters([
+        'allProducts'
+      ]),
+      product () {
+        let id = parseInt(this.$route.params.id)
+        return this.allProducts.find((p) => p.id === id) || {}
       }
     },
-    created () {
-      this.getAllProducts()
+    methods: {
+      ...mapActions([
+        'getAllProducts',
+        'addToCart'
+      ])
     }
   }
 </script>
